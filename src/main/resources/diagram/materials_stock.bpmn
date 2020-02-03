@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1576026229281" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="materials_stock" isClosed="false" isExecutable="true" name="原料码垛" processType="None">
+    <startEvent id="_2" name="StartEvent"/>
+    <userTask activiti:exclusive="true" id="get_materials_BOM" name="运输车司机：获取原料BOM并发布任务"/>
+    <sequenceFlow id="_4" sourceRef="_2" targetRef="get_materials_BOM"/>
+    <userTask activiti:exclusive="true" id="fetch_pallets" name="运输车司机：取托盘"/>
+    <userTask activiti:exclusive="true" id="get_weight" name="货车过磅后获取某种原料重量信息并与系统数据核对"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="_10" name="ExclusiveGateway"/>
+    <endEvent id="_17" name="EndEvent"/>
+    <subProcess activiti:exclusive="true" id="stock_sub_process" name="人工码垛子流程" triggeredByEvent="false">
+      <multiInstanceLoopCharacteristics isSequential="false"/>
+      <startEvent id="_28" name="StartEvent"/>
+      <endEvent id="_30" name="EndEvent"/>
+      <userTask activiti:exclusive="true" id="read_code" name="原料码垛员：读码"/>
+      <exclusiveGateway gatewayDirection="Unspecified" id="judge_status" name="原料码垛员：判断托盘码状态"/>
+      <userTask activiti:exclusive="true" id="data_entry" name="原料码垛员：录入原料信息（包括破包信息）"/>
+      <serviceTask activiti:exclusive="true" id="system_report" name="系统报障"/>
+      <sequenceFlow id="_34" sourceRef="read_code" targetRef="judge_status"/>
+      <sequenceFlow id="_37" name="读码失败" sourceRef="judge_status" targetRef="system_report">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${palletStatus="读码错误"||palletStatus="占用"}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="_7" sourceRef="system_report" targetRef="read_code"/>
+      <sequenceFlow id="_9" sourceRef="_28" targetRef="read_code"/>
+      <sequenceFlow id="_15" sourceRef="data_entry" targetRef="_30"/>
+      <sequenceFlow id="_16" name="读码成功" sourceRef="judge_status" targetRef="data_entry">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${palletStatus="idle"}]]></conditionExpression>
+      </sequenceFlow>
+    </subProcess>
+    <sequenceFlow id="_26" sourceRef="fetch_pallets" targetRef="stock_sub_process"/>
+    <sequenceFlow id="_27" sourceRef="stock_sub_process" targetRef="get_weight"/>
+    <userTask activiti:exclusive="true" id="update_pallet" name="以实际过磅重量为准，核对实际&#10;录入信息，修改托盘信息"/>
+    <sequenceFlow id="_31" name="核对偏差过大" sourceRef="_10" targetRef="update_pallet"/>
+    <sequenceFlow id="_6" sourceRef="get_materials_BOM" targetRef="fetch_pallets"/>
+    <sequenceFlow id="_12" name="核对无问题" sourceRef="_10" targetRef="_17"/>
+    <sequenceFlow id="_13" sourceRef="update_pallet" targetRef="_17"/>
+    <sequenceFlow id="_3" sourceRef="get_weight" targetRef="_10"/>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="materials_stock">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+        <omgdc:Bounds height="32.0" width="32.0" x="545.0" y="45.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="get_materials_BOM" id="Shape-get_materials_BOM">
+        <omgdc:Bounds height="55.0" width="85.0" x="520.0" y="120.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="fetch_pallets" id="Shape-fetch_pallets">
+        <omgdc:Bounds height="55.0" width="85.0" x="520.0" y="220.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="get_weight" id="Shape-get_weight">
+        <omgdc:Bounds height="80.0" width="105.0" x="485.0" y="430.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="80.0" width="105.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" id="Shape-_10" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="530.0" y="705.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" id="Shape-_17">
+        <omgdc:Bounds height="32.0" width="32.0" x="530.0" y="925.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="stock_sub_process" id="Shape-stock_sub_process" isExpanded="true">
+        <omgdc:Bounds height="310.0" width="675.0" x="740.0" y="315.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="310.0" width="675.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="update_pallet" id="Shape-update_pallet">
+        <omgdc:Bounds height="55.0" width="85.0" x="740.0" y="695.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28" id="Shape-_28">
+        <omgdc:Bounds height="32.0" width="32.0" x="760.0" y="535.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_30" id="Shape-_30">
+        <omgdc:Bounds height="32.0" width="32.0" x="1330.0" y="530.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="read_code" id="Shape-read_code">
+        <omgdc:Bounds height="55.0" width="85.0" x="895.0" y="520.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="judge_status" id="Shape-judge_status" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="1015.0" y="535.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="data_entry" id="Shape-data_entry">
+        <omgdc:Bounds height="55.0" width="85.0" x="1160.0" y="515.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="system_report" id="Shape-system_report">
+        <omgdc:Bounds height="55.0" width="85.0" x="1020.0" y="390.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13" sourceElement="update_pallet" targetElement="_17">
+        <omgdi:waypoint x="785.0" y="750.0"/>
+        <omgdi:waypoint x="785.0" y="940.0"/>
+        <omgdi:waypoint x="561.9687194226713" y="940.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_34" id="BPMNEdge__34" sourceElement="read_code" targetElement="judge_status">
+        <omgdi:waypoint x="980.0" y="547.5"/>
+        <omgdi:waypoint x="1015.0" y="551.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="_10" targetElement="_17">
+        <omgdi:waypoint x="546.0" y="737.0"/>
+        <omgdi:waypoint x="546.0" y="925.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_37" id="BPMNEdge__37" sourceElement="judge_status" targetElement="system_report">
+        <omgdi:waypoint x="1033.5" y="537.5"/>
+        <omgdi:waypoint x="1033.5" y="445.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15" id="BPMNEdge__15" sourceElement="data_entry" targetElement="_30">
+        <omgdi:waypoint x="1245.0" y="542.5"/>
+        <omgdi:waypoint x="1330.0" y="546.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="judge_status" targetElement="data_entry">
+        <omgdi:waypoint x="1047.0" y="551.0"/>
+        <omgdi:waypoint x="1160.0" y="542.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26" id="BPMNEdge__26" sourceElement="fetch_pallets" targetElement="stock_sub_process">
+        <omgdi:waypoint x="605.0" y="247.5"/>
+        <omgdi:waypoint x="1080.0" y="310.0"/>
+        <omgdi:waypoint x="1080.0" y="315.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27" id="BPMNEdge__27" sourceElement="stock_sub_process" targetElement="get_weight">
+        <omgdi:waypoint x="740.0" y="470.0"/>
+        <omgdi:waypoint x="590.0" y="470.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_3" id="BPMNEdge__3" sourceElement="get_weight" targetElement="_10">
+        <omgdi:waypoint x="546.0" y="510.0"/>
+        <omgdi:waypoint x="546.0" y="705.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="_2" targetElement="get_materials_BOM">
+        <omgdi:waypoint x="561.0" y="77.0"/>
+        <omgdi:waypoint x="561.0" y="120.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="get_materials_BOM" targetElement="fetch_pallets">
+        <omgdi:waypoint x="562.5" y="175.0"/>
+        <omgdi:waypoint x="562.5" y="220.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="system_report" targetElement="read_code">
+        <omgdi:waypoint x="1020.0" y="417.5"/>
+        <omgdi:waypoint x="940.0" y="475.0"/>
+        <omgdi:waypoint x="940.0" y="520.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="_28" targetElement="read_code">
+        <omgdi:waypoint x="792.0" y="551.0"/>
+        <omgdi:waypoint x="895.0" y="547.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_31" id="BPMNEdge__31" sourceElement="_10" targetElement="update_pallet">
+        <omgdi:waypoint x="562.0" y="721.0"/>
+        <omgdi:waypoint x="740.0" y="722.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
