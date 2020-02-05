@@ -17,8 +17,8 @@
 	<task:executor id="executor" pool-size="5" />
 	<task:scheduler id="scheduler" pool-size="10" />
 	<task:annotation-driven executor="executor" scheduler="scheduler" />
-		
-	
+
+
 	<!-- 定时任务配置   smsSendTask 可配置到管理界面 -->
 	<bean id="smsSendTaskJob"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -37,8 +37,8 @@
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="costTask" />
 		<property name="targetMethod" value="run" />
-		 <property name="concurrent" value="false"/>  
-     
+		 <property name="concurrent" value="false"/>
+
 	</bean>
 
 	<bean id="costTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
@@ -60,7 +60,7 @@
 		<property name="jobDetail" ref="goodsMoveTaskJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
-	
+
 	<!-- 定时任务配置   noticeImTask 可配置到管理界面 -->
 	<bean id="noticeImTaskJob"
 		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -71,8 +71,22 @@
 	</bean>
 
 	<bean id="noticeImTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
-		<property name="jobDetail" ref="goodsMoveTaskJob" />
+		<property name="jobDetail" ref="noticeImTaskJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
+	</bean>
+
+	<!-- 定时任务配置   noticeImTask 可配置到管理界面 -->
+	<bean id="goodsInfoTaskJob"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="goodsInfoTask" />
+		<property name="targetMethod" value="run" />
+		<property name="concurrent" value="false"/>
+
+	</bean>
+
+	<bean id="goodsInfoTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean">
+		<property name="jobDetail" ref="goodsInfoTaskJob" />
+		<property name="cronExpression" value="0 0 1 ? * L" />
 	</bean>
 
 	<!-- 定时任务调度器 -->
@@ -83,6 +97,8 @@
 				<ref bean="costTaskCronTrigger" />
 				<ref bean="smsSendTaskCronTrigger" />
 				<ref bean="goodsMoveTaskCronTrigger" />
+				<ref bean="noticeImTaskCronTrigger" />
+				<ref bean="goodsInfoTaskCronTrigger" />
 			</list>
 		</property>
 	</bean>
