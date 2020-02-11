@@ -1,12 +1,8 @@
 package org.jeecgframework.web.system.sms.util.task;
 
-import com.zzjee.md.entity.MdBinEntity;
-import com.zzjee.md.entity.MdCusEntity;
-import com.zzjee.md.entity.MdGoodsEntity;
-import com.zzjee.wm.entity.WmDayCostConfEntity;
-import com.zzjee.wm.entity.WmDayCostEntity;
-import com.zzjee.wm.entity.WmToMoveGoodsEntity;
-import com.zzjee.wm.entity.WvStockEntity;
+import com.zzjee.md.entity.*;
+import com.zzjee.mvyj.entity.MvStockYjEntity;
+import com.zzjee.wm.entity.*;
 import org.jeecgframework.core.constant.Globals;
 import org.jeecgframework.core.util.DateUtils;
 import org.jeecgframework.core.util.ResourceUtil;
@@ -17,16 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.xiaoleilu.hutool.date.DateTime.now;
 
 /**
- * 
+ *
  * @ClassName:SmsSendTask 所有信息的发送定时任务类
  * @Description: TODO
  * @date 2014-11-13 下午5:06:34
- * 
+ *
  */
 @Service("goodsMoveTask")
 public class GoodsMoveTask {
@@ -37,7 +35,7 @@ public class GoodsMoveTask {
 
 	/* @Scheduled(cron="0 0 01 * * ?") */
 	public void run() {
-		long start = System.currentTimeMillis();
+		/*long start = System.currentTimeMillis();
 		String datestr = DateUtils.date2Str(DateUtils.date_sdf);
 		org.jeecgframework.core.util.LogUtil
 				.info("===================转移定时任务开始===================");
@@ -60,7 +58,55 @@ public class GoodsMoveTask {
 				.info("===================转移定时任务结束===================");
 		long end = System.currentTimeMillis();
 		long times = end - start;
-		org.jeecgframework.core.util.LogUtil.info("转移定时任务总耗时" + times + "毫秒");
+		org.jeecgframework.core.util.LogUtil.info("转移定时任务总耗时" + times + "毫秒");*/
+
+		String warnDays = ResourceUtil.getConfigByName("warningDays");
+		List<WmStockBaseStockEntity> stocks = systemService.loadAll(WmStockBaseStockEntity.class);
+		Calendar now = Calendar.getInstance();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		for (WmStockBaseStockEntity stock : stocks){
+			MvStockYjEntity mvstock = systemService.findUniqueByProperty(MvStockYjEntity.class, "kuWeiBianMa", stock.getKuWeiBianMa());
+			MdGoodsEntity good = systemService.findUniqueByProperty(MdGoodsEntity.class, "shpBianMa", stock.getGoodsId());
+			MdBinEntity bin = systemService.findUniqueByProperty(MdBinEntity.class, "kuWeiBianMa", stock.getKuWeiBianMa());
+			Map palletMap = systemService.findOneForJdbc("select GROUP_CONCAT(mp.tuo_pan_bian_ma) as codes from md_pallet mp where mp.bin_Bian_Ma=?", stock.getKuWeiBianMa());
+			Calendar warnDate = null;
+			Calendar expireDate = null;
+			try {
+				warnDate = DateUtils.parseCalendar(stock.getGoodsProData(), "yyyy-MM-dd");
+				expireDate = DateUtils.parseCalendar(stock.getGoodsProData(), "yyyy-MM-dd");
+				warnDate.add(Calendar.DAY_OF_YEAR, Integer.parseInt(stock.getGoodsBzhiqi())-Integer.parseInt(warnDays));
+				expireDate.add(Calendar.DAY_OF_YEAR, Integer.parseInt(stock.getGoodsBzhiqi()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			if(mvstock == null){
+				mvstock = new MvStockYjEntity();
+				mvstock.setKuctype("库存");
+				mvstock.setWarnType(warnDate.after(now)?"正常":(expireDate.after(now)?"预警":"过期"));
+				mvstock.setBaseGoodscount(Integer.parseInt(stock.getGoodsQua()));
+				mvstock.setBaseUnit(good.getShlDanWei());
+				mvstock.setKuWeiBianMa(stock.getKuWeiBianMa());
+				mvstock.setBinId((String) palletMap.get("codes"));
+				mvstock.setCusCode(null);
+				mvstock.setZhongWenQch(null);
+				mvstock.setGoodsId(good.getShpBianMa());
+				mvstock.setShpMingCheng(good.getShpMingCheng());
+				mvstock.setGoodsProData(stock.getGoodsProData());
+				mvstock.setBzhiQi(stock.getGoodsBzhiqi());
+				mvstock.setDqr(DateUtils.formatDate(expireDate, "yyyy-MM-dd"));
+				mvstock.setShangJiaCiXu(bin.getShangJiaCiXu());
+				mvstock.setQuHuoCiXu(bin.getQuHuoCiXu());
+				mvstock.setResDate(String.valueOf(expireDate.get(Calendar.DATE) - now.get(Calendar.DATE)));
+				systemService.save(mvstock);
+			}else{
+				mvstock.setWarnType(warnDate.after(now)?"正常":(expireDate.after(now)?"预警":"过期"));
+				mvstock.setBaseGoodscount(Integer.parseInt(stock.getGoodsQua()));
+				mvstock.setBinId((String) palletMap.get("codes"));
+				mvstock.setDqr(DateUtils.formatDate(expireDate, "yyyy-MM-dd"));
+				mvstock.setResDate(String.valueOf(expireDate.get(Calendar.DATE) - now.get(Calendar.DATE)));
+				systemService.saveOrUpdate(mvstock);
+			}
+		}
 	}
 	public  void goodsMove(String binstrore,String moveStatus ){
 	    //转移到B

@@ -18,12 +18,12 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.SequenceGenerator;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
-/**   
+/**
  * @Title: Entity
  * @Description: 效期预警
  * @author erzhongxmu
  * @date 2017-09-17 22:13:08
- * @version V1.0   
+ * @version V1.0
  *
  */
 @Entity
@@ -35,6 +35,8 @@ public class MvStockYjEntity implements java.io.Serializable {
 	/**库存类型*/
 	@Excel(name="库存类型")
 	private java.lang.String kuctype;
+	@Excel(name="库存类型")
+	private java.lang.String warnType;
 	/**基本数量*/
 	@Excel(name="基本数量")
 	private java.lang.Integer baseGoodscount;
@@ -82,7 +84,7 @@ public class MvStockYjEntity implements java.io.Serializable {
 	/**上架次序*/
 
 	private java.lang.String shangJiaCiXu;
-	
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  id
@@ -230,7 +232,7 @@ public class MvStockYjEntity implements java.io.Serializable {
 	public void setGoodsId(java.lang.String goodsId){
 		this.goodsId = goodsId;
 	}
-	
+
 	@Column(name ="shp_bian_makh",nullable=true,length=32)
 	public java.lang.String getShpBianmakh(){
 		return this.shpBianmakh;
@@ -243,7 +245,7 @@ public class MvStockYjEntity implements java.io.Serializable {
 	public void setShpBianmakh(java.lang.String shpBianmakh){
 		this.shpBianmakh = shpBianmakh;
 	}
-	
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  商品名称
@@ -340,7 +342,7 @@ public class MvStockYjEntity implements java.io.Serializable {
 	public void setShangJiaCiXu(java.lang.String shangJiaCiXu){
 		this.shangJiaCiXu = shangJiaCiXu;
 	}
-	
+
 	@Column(name ="RES_DATE",nullable=true,length=32)
 	public java.lang.String getResDate(){
 		return this.resDate;
@@ -364,5 +366,14 @@ public class MvStockYjEntity implements java.io.Serializable {
 	 */
 	public void setGuoqiBili(java.lang.String guoqiBili){
 		this.guoqiBili = guoqiBili;
+	}
+
+	@Column(name ="warn_type",nullable=true,length=32)
+	public String getWarnType() {
+		return warnType;
+	}
+
+	public void setWarnType(String warnType) {
+		this.warnType = warnType;
 	}
 }
