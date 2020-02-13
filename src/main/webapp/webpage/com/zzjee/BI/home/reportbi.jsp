@@ -47,7 +47,7 @@
                                 plotShadow : false
                             },
                             title : {
-                                text : '近七日下架数'
+                                text : '近半年出库数量'
                             },
                             xAxis : {
                                 categories : xAxisCategories
@@ -89,73 +89,6 @@
 			var chart;
 			$.ajax({
 				type : "POST",
-				url : "BiController.do?cpNamedownCount&reportType=column",
-				success : function(jsondata) {
-					data = eval(jsondata);
-                    var xAxisCategories = new Array();
-
-                    for(var i = 0; i < data[0].data.length; i++){
-                        xAxisCategories[i] = data[0].data[i].name;
-                    }
-					//console.log(data);//Highcharts报表插件bug,IE8下不能出现该语句,否则报表不显示					
-
-					chart = new Highcharts.Chart({
-						chart : {
-							renderTo : 'containerCol',
-							plotBackgroundColor : null,
-							plotBorderWidth : null,
-							plotShadow : false
-						},
-						title : {
-							text : '下架数量前6'
-						},
-						xAxis : {
-
-							categories :xAxisCategories
-
-						},
-						tooltip : {
-							 percentageDecimals : 0,
-							 formatter: function() {
-            					return  '<b>'+this.point.name + '</b>:' +  Highcharts.numberFormat(this.y, 0);
-         					}
-
-						},
-
-						plotOptions : {
-							column : {
-								allowPointSelect : true,
-								cursor : 'pointer',
-								showInLegend : true,
-								dataLabels : {
-									enabled : true,
-									color : '#000000',
-									connectorColor : '#000000',
-									formatter : function() {
-
-										return  Highcharts.numberFormat(this.y, 1);
-
-									}
-								}
-							}
-						},
-
-						series:data//,IE8不喜欢多余的逗号
-
-					});
-				}
-			});
-		});
-	});
-</script>
-
-
-<script type="text/javascript">
-	$(function() {
-		$(document).ready(function() {
-			var chart;
-			$.ajax({
-				type : "POST",
 				url : "BiController.do?cpNameupCount&reportType=pie",
 				success : function(jsondata) {
 					data = eval(jsondata);
@@ -172,7 +105,7 @@
 							plotShadow : false
 						},
 						title : {
-							text : '上架数量前6'
+							text : '近半年入库数量'
 						},
 						xAxis : {
 							categories : xAxisCategories
@@ -188,17 +121,17 @@
 
 						plotOptions : {
 							pie : {
-								allowPointSelect : true,
-								cursor : 'pointer',
-								showInLegend : true,
-								dataLabels : {
-									enabled : true,
-									color : '#000000',
-									connectorColor : '#000000',
-									formatter : function() {
-										return   Highcharts.numberFormat(this.y, 1);
-									}
-								}
+								  allowPointSelect : true,
+                                  cursor : 'pointer',
+                                  showInLegend : true,
+                                  dataLabels : {
+                                      enabled : true,
+                                      color : '#000000',
+                                      connectorColor : '#000000',
+                                      formatter : function() {
+                                          return '<b>' + this.point.name + '</b>: ' + Highcharts.numberFormat(this.percentage, 1)+"%";
+                                      }
+                                  }
 							}
 						},
 						series : data
@@ -247,11 +180,11 @@
 					<button type="button" class="btn btn-floating btn-sm btn-warning">
 						<i class="icon wb-shopping-cart"></i>
 					</button>
-					<span class="margin-left-15 font-weight-400">待收货</span>
+					<span class="margin-left-15 font-weight-400">托盘总数</span>
 					<div class="content-text text-center margin-bottom-0">
 						<i class="text-danger icon wb-triangle-up font-size-20"> </i>
 						<span class="font-size-30 font-weight-100">${num1}</span>
-						<p class="blue-grey-400 font-weight-100 margin-0">待收货件数</p>
+						<p class="blue-grey-400 font-weight-100 margin-0">托盘总数</p>
 					</div>
 				</div>
 			</div>
@@ -262,11 +195,11 @@
 					<button type="button" class="btn btn-floating btn-sm btn-danger">
 						<i class="icon fa-yen"></i>
 					</button>
-					<span class="margin-left-15 font-weight-400">待上架</span>
+					<span class="margin-left-15 font-weight-400">空闲托盘数</span>
 					<div class="content-text text-center margin-bottom-0">
 						<i class="text-success icon wb-triangle-up font-size-20"> </i>
 						<span class="font-size-30 font-weight-100">${num2}</span>
-						<p class="blue-grey-400 font-weight-100 margin-0">待上架件数</p>
+						<p class="blue-grey-400 font-weight-100 margin-0">空闲托盘数</p>
 					</div>
 				</div>
 			</div>
@@ -277,11 +210,11 @@
 					<button type="button" class="btn btn-floating btn-sm btn-success">
 						<i class="icon wb-eye"></i>
 					</button>
-					<span class="margin-left-15 font-weight-400">待拣货</span>
+					<span class="margin-left-15 font-weight-400">货位总数</span>
 					<div class="content-text text-center margin-bottom-0">
 						<i class="text-danger icon wb-triangle-up font-size-20"> </i>
 						<span class="font-size-30 font-weight-100">${num3}</span>
-						<p class="blue-grey-400 font-weight-100 margin-0">待拣货件数</p>
+						<p class="blue-grey-400 font-weight-100 margin-0">货位总数</p>
 					</div>
 				</div>
 			</div>
@@ -292,11 +225,11 @@
 					<button type="button" class="btn btn-floating btn-sm btn-primary">
 						<i class="icon wb-user"></i>
 					</button>
-					<span class="margin-left-15 font-weight-400">拣货中</span>
+					<span class="margin-left-15 font-weight-400">空闲货位</span>
 					<div class="content-text text-center margin-bottom-0">
 						<i class="text-danger icon wb-triangle-up font-size-20"> </i>
 						<span class="font-size-30 font-weight-100">${num4}</span>
-						<p class="blue-grey-400 font-weight-100 margin-0">拣货中件数</p>
+						<p class="blue-grey-400 font-weight-100 margin-0">空闲货位</p>
 					</div>
 				</div>
 			</div>
@@ -306,9 +239,9 @@
 </div>
 
 
-<span id="containerPie" style="float: left; width: 36%; height:350px;"></span>
-<span id="containerdayline" style="float: left; width: 33%; height:350px;"></span>
-<span id="containerCol" style="float: left; width: 31%;height:350px;"></span>
+<span id="containerPie" style="float: left; width: 48%; height:350px;"></span>
+<span id="containerdayline" style="float: left; width: 48%; height:350px;"></span>
+<!-- <span id="containerCol" style="float: left; width: 31%;height:350px;"></span> -->
 
 <script type="text/javascript">
 	$(function(){

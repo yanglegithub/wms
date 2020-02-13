@@ -34,7 +34,7 @@ public class BiController extends BaseController {
         String num5= "0";   //库存转移计划中的数量
 //        String yearstr = DateUtils.date2Str(DateUtils.yyyyMMdd);
 
-        String ysql = "select CONVERT( sum(base_goodscount),DECIMAL(10,0)) as linecount from wm_im_notice_i where bin_pre = 'N'" ;
+        String ysql = "select count(*) as linecount from md_pallet where ting_yong = 'N'" ;
 
         List<Map<String,Object>> ymaplist1=systemService.findForJdbc(ysql);
         for (Map<String,Object> object : ymaplist1) {
@@ -46,7 +46,7 @@ public class BiController extends BaseController {
 
             }
         }
-        ysql = "select CONVERT( sum(base_goodscount),DECIMAL(10,0)) as linecount from wm_in_qm_i where bin_sta = 'N'" ;
+        ysql = "select count(*) as linecount from md_pallet where ting_yong = 'N' and tuo_pan_zhuang_tai = '空闲'";
 
         List<Map<String,Object>> ymaplist2=systemService.findForJdbc(ysql);
         for (Map<String,Object> object : ymaplist2) {
@@ -58,7 +58,7 @@ public class BiController extends BaseController {
 
             }
         }
-        ysql = "select CONVERT( sum(base_goodscount),DECIMAL(10,0)) as linecount from wm_om_qm_i where bin_sta = 'I'" ;
+        ysql = "select count(*) as linecount from md_bin where ting_yong = 'N'" ;
 
         List<Map<String,Object>> ymaplist3=systemService.findForJdbc(ysql);
         for (Map<String,Object> object : ymaplist3) {
@@ -70,7 +70,7 @@ public class BiController extends BaseController {
 
             }
         }
-        ysql = "select CONVERT( sum(base_goodscount),DECIMAL(10,0)) as linecount from wm_om_qm_i where bin_sta = 'N'" ;
+        ysql = "select count(*) as linecount from md_bin where ting_yong = 'N' and ku_wei_bian_ma not in (select bin_bian_ma from md_pallet where bin_bian_ma is not null)" ;
 
         List<Map<String,Object>> ymaplist4=systemService.findForJdbc(ysql);
         for (Map<String,Object> object : ymaplist4) {
@@ -133,7 +133,7 @@ public class BiController extends BaseController {
 //		Double count = systemService.getCountForJdbc("SELECT COUNT(1) FROM T_S_Log WHERE 1=1");
         List lt = new ArrayList();
         //hc = new Highchart();
-        hc.setName("近七日下架数量");
+        hc.setName("近半年出库数量");
         hc.setType(reportType);
         Map<String, Object> map;
 //        Double count = Double.parseDouble(mapcount.get(0).get("amount").toString());
@@ -193,7 +193,7 @@ public class BiController extends BaseController {
 //		Double count = systemService.getCountForJdbc("SELECT COUNT(1) FROM T_S_Log WHERE 1=1");
         List lt = new ArrayList();
         //hc = new Highchart();
-        hc.setName("上架数量前6");
+        hc.setName("近半年入库数量");
         hc.setType(reportType);
         Map<String, Object> map;
 //        Double count = Double.parseDouble(mapcount.get(0).get("amount").toString());
