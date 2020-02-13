@@ -43,8 +43,18 @@
     <property name="concurrent" value="false"/> 
   </bean>  
   <bean id="noticeImTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean"> 
-    <property name="jobDetail" ref="goodsMoveTaskJob"/>  
+    <property name="jobDetail" ref="noticeImTaskJob"/>  
     <property name="cronExpression" value="0 0/1 * * * ?"/> 
+  </bean>  
+  <!-- 定时任务配置   noticeImTask 可配置到管理界面 -->  
+  <bean id="goodsInfoTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+    <property name="targetObject" ref="goodsInfoTask"/>  
+    <property name="targetMethod" value="run"/>  
+    <property name="concurrent" value="false"/> 
+  </bean>  
+  <bean id="goodsInfoTaskCronTrigger" class="org.jeecgframework.core.timer.DataBaseCronTriggerBean"> 
+    <property name="jobDetail" ref="goodsInfoTaskJob"/>  
+    <property name="cronExpression" value="0 0 1 ? * L"/> 
   </bean>  
   <!-- 定时任务调度器 -->  
   <bean id="schedulerFactory" lazy-init="false" autowire="no" class="org.jeecgframework.core.timer.DataBaseSchedulerFactoryBean"> 
@@ -52,7 +62,9 @@
       <list> 
         <ref bean="costTaskCronTrigger"/>  
         <ref bean="smsSendTaskCronTrigger"/>  
-        <ref bean="goodsMoveTaskCronTrigger"/> 
+        <ref bean="goodsMoveTaskCronTrigger"/>  
+        <ref bean="noticeImTaskCronTrigger"/>  
+        <ref bean="goodsInfoTaskCronTrigger"/> 
       </list> 
     </property> 
   </bean> 
