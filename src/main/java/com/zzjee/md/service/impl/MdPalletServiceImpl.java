@@ -17,27 +17,39 @@ import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
 @Transactional
 public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletServiceI {
 
-	
+
  	public void delete(MdPalletEntity entity) throws Exception{
  		super.delete(entity);
  		//执行删除操作增强业务
 		this.doDelBus(entity);
  	}
- 	
+
  	public Serializable save(MdPalletEntity entity) throws Exception{
  		Serializable t = super.save(entity);
  		//执行新增操作增强业务
  		this.doAddBus(entity);
  		return t;
  	}
- 	
+
  	public void saveOrUpdate(MdPalletEntity entity) throws Exception{
  		super.saveOrUpdate(entity);
  		//执行更新操作增强业务
  		this.doUpdateBus(entity);
  	}
- 	
- 	/**
+
+	@Override
+	public Map<String, Object> findPalletsStatus() {
+ 		String sql =
+				"SELECT  " +
+				"  SUM(IF (p.tuo_pan_zhuang_tai <> '空闲', 1, 0 )) AS 'used',  " +
+				"  SUM(1) AS 'sum'  " +
+				"FROM md_pallet p  " +
+				"WHERE p.ting_yong = 'N'";
+		Map result =  this.findOneForJdbc(sql);
+		return result;
+	}
+
+	/**
 	 * 新增操作增强业务
 	 * @param t
 	 * @return
@@ -45,7 +57,7 @@ public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletSe
 	private void doAddBus(MdPalletEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
@@ -57,7 +69,7 @@ public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletSe
 	private void doUpdateBus(MdPalletEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
@@ -69,11 +81,11 @@ public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletSe
 	private void doDelBus(MdPalletEntity t) throws Exception{
 	    //-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
- 	
+
  	private Map<String,Object> populationMap(MdPalletEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", t.getId());
@@ -106,7 +118,7 @@ public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletSe
 		map.put("entry_key", t.getEntryKey());
 		return map;
 	}
- 	
+
  	/**
 	 * 替换sql中的变量
 	 * @param sql
@@ -145,7 +157,7 @@ public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletSe
  		sql  = sql.replace("#{UUID}",UUID.randomUUID().toString());
  		return sql;
  	}
- 	
+
  	/**
 	 * 执行JAVA增强
 	 */
@@ -166,7 +178,7 @@ public class MdPalletServiceImpl extends CommonServiceImpl implements MdPalletSe
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new Exception("执行JAVA增强出现异常！");
-			} 
+			}
 		}
  	}
 }

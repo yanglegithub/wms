@@ -22,27 +22,43 @@ import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
 @Transactional
 public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI {
 
-	
+
  	public void delete(MdBinEntity entity) throws Exception{
  		super.delete(entity);
  		//执行删除操作增强业务
 		this.doDelBus(entity);
  	}
- 	
+
  	public Serializable save(MdBinEntity entity) throws Exception{
  		Serializable t = super.save(entity);
  		//执行新增操作增强业务
  		this.doAddBus(entity);
  		return t;
  	}
- 	
+
  	public void saveOrUpdate(MdBinEntity entity) throws Exception{
  		super.saveOrUpdate(entity);
  		//执行更新操作增强业务
  		this.doUpdateBus(entity);
  	}
- 	
- 	/**
+
+	@Override
+	public Map<String, Object> findBins() {
+ 		String sql =
+				"SELECT " +
+				"  SUM(IF (EXISTS ( " +
+				"      SELECT * FROM   md_pallet p " +
+				"      WHERE p.bin_bian_ma = b.ku_wei_bian_ma " +
+				"    ),1,0) " +
+				"  ) AS 'used', " +
+				"   SUM(1) AS 'sum' " +
+				"FROM md_bin b " +
+				"WHERE b.ting_yong = 'N'";
+ 		Map result =  this.findOneForJdbc(sql);
+		return result;
+	}
+
+	/**
 	 * 新增操作增强业务
 	 * @param t
 	 * @return
@@ -50,7 +66,7 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
 	private void doAddBus(MdBinEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
@@ -62,7 +78,7 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
 	private void doUpdateBus(MdBinEntity t) throws Exception{
 		//-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
@@ -74,11 +90,11 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
 	private void doDelBus(MdBinEntity t) throws Exception{
 	    //-----------------sql增强 start----------------------------
 	 	//-----------------sql增强 end------------------------------
-	 	
+
 	 	//-----------------java增强 start---------------------------
 	 	//-----------------java增强 end-----------------------------
  	}
- 	
+
  	private Map<String,Object> populationMap(MdBinEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", t.getId());
@@ -117,7 +133,7 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
 		map.put("bin_store", t.getBinStore());
 		return map;
 	}
- 	
+
  	/**
 	 * 替换sql中的变量
 	 * @param sql
@@ -163,7 +179,7 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
  		sql  = sql.replace("#{UUID}",UUID.randomUUID().toString());
  		return sql;
  	}
- 	
+
  	/**
 	 * 执行JAVA增强
 	 */
@@ -184,7 +200,7 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new Exception("执行JAVA增强出现异常！");
-			} 
+			}
 		}
  	}
 }

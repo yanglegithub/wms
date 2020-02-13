@@ -7,10 +7,13 @@ import com.zzjee.flow.util.TaskStatus;
 import com.zzjee.md.entity.MdMovePalletEntity;
 import com.zzjee.md.entity.MdPalletEntity;
 import com.zzjee.md.entity.PalletStatus;
+import com.zzjee.md.service.MdBinServiceI;
+import com.zzjee.md.service.MdPalletServiceI;
 import com.zzjee.wm.entity.WmOmNoticeHEntity;
 import com.zzjee.wm.entity.WmOmNoticeIEntity;
 import com.zzjee.wm.entity.WmOmQmIEntity;
 import com.zzjee.wm.page.WmOmNoticeHPage;
+import com.zzjee.wm.service.WmStockBaseStockServiceI;
 import com.zzjee.wmutil.WmsContants;
 import org.jeecgframework.core.common.model.json.AjaxJson;
 import org.jeecgframework.core.util.MyBeanUtils;
@@ -28,12 +31,18 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/flow/maintainer")
-public class MaintainerController {
+public class MaintainerController<MdBinS> {
 
     @Resource
     SystemService systemService;
     @Resource
     StoreAssignmentServiceI storeAssignmentService;
+    @Resource
+    MdBinServiceI mdBinService;
+    @Resource
+    MdPalletServiceI mdPalletService;
+    @Resource
+    WmStockBaseStockServiceI wmStockBaseStockService;
 
     @RequestMapping(params = "specifyPlatTask")
     @ResponseBody
@@ -127,6 +136,41 @@ public class MaintainerController {
                 systemService.updateEntitie(pallet);
             }
         }
+        return j;
+    }
+
+
+
+    @RequestMapping(params = "boardInfo")
+    @ResponseBody
+    public AjaxJson boardInfo(){
+        AjaxJson j = new AjaxJson();
+        Map map = new HashMap();
+        Map temp = wmStockBaseStockService.findQuaGroupByType(30);
+        map.putAll(temp);
+        temp = wmStockBaseStockService.findQuaVar();
+        map.putAll(temp);
+        temp = mdBinService.findBins();
+        map.put("binUsed",temp.get("used"));
+        map.put("binSum",temp.get("sum"));
+        temp = mdPalletService.findPalletsStatus();
+        map.put("palletUsed",temp.get("used"));
+        map.put("palletSum",temp.get("sum"));
+        j.setObj(map);
+        return j;
+    }
+
+    public AjaxJson boardSearch(String code){
+        AjaxJson j = new AjaxJson();
+        Map result = new HashMap();
+        if (code == null){
+            j.setSuccess(false);
+            j.setMsg("参数不能为空");
+            return j;
+        }
+        long sum = wmStockBaseStockService.findQuaByType(code);
+        result.put("sum",sum);
+        j.setObj(result);
         return j;
     }
 }
