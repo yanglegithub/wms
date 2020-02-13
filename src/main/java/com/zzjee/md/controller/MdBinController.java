@@ -48,7 +48,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.zzjee.ba.entity.BaStoreEntity;
 import com.zzjee.md.entity.MdBinEntity;
+import com.zzjee.md.entity.MdPalletEntity;
 import com.zzjee.md.service.MdBinServiceI;
 
 import net.sf.json.JSONArray;
@@ -77,8 +79,6 @@ public class MdBinController extends BaseController {
 	@Autowired
 	private Validator validator;
 
-
-
 	/**
 	 * 仓位定义列表 页面跳转
 	 *
@@ -88,31 +88,173 @@ public class MdBinController extends BaseController {
 	public ModelAndView list(HttpServletRequest request) {
 		return new ModelAndView("com/zzjee/md/mdBinList");
 	}
+
 	@RequestMapping(params = "listc")
 	public ModelAndView listc(HttpServletRequest request) {
-		return new ModelAndView("com/zzjee/md/mdavabinlist");
+		//查询所有仓库
+		List<BaStoreEntity> list = systemService.getList(BaStoreEntity.class);
+		return new ModelAndView("com/zzjee/md/mdavabinlist").addObject("baStoreList", list);
 	}
 	/**
 	 * easyui AJAX请求数据
-	 *
+	 * 
 	 * @param request
 	 * @param response
 	 * @param dataGrid
 	 */
-
 	@RequestMapping(params = "datagrid")
 	public void datagrid(MdBinEntity mdBin,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
 		CriteriaQuery cq = new CriteriaQuery(MdBinEntity.class, dataGrid);
 		//查询条件组装器
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, mdBin, request.getParameterMap());
 		try{
-		//自定义追加查询条件
+			//自定义追加查询条件
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
 		cq.add();
 		this.mdBinService.getDataGridReturn(cq, true);
 		TagUtil.datagrid(response, dataGrid);
+	}
+	/**
+	 * 仓位图
+	 * @param mdStoreId 仓库ID
+	 * @return
+	 */
+	@RequestMapping(params = "getMdBinView")
+	@ResponseBody
+	public AjaxJson getMdBinView(String mdStoreId) {
+		AjaxJson ajaxJson = new AjaxJson();
+		BaStoreEntity baStore = systemService.getEntity(BaStoreEntity.class, mdStoreId);
+		if(baStore != null) {
+			ajaxJson.setObj(mdBinView(baStore));
+			ajaxJson.setSuccess(true);
+		}
+		return ajaxJson;
+	}
+	
+	/**
+	 * 根据xy坐标获取托盘信息
+	 * @param xy {x:y}
+	 * @return
+	 */
+	@RequestMapping(params = "getMdBinByXY")
+	public ModelAndView getMdBinByXY(String xy) {
+		String hql0 = "from MdBinEntity  where 1 = 1 AND mingXi1 like ? ";
+		List<MdBinEntity> mdBinEntities = systemService.findHql(hql0, "%"+xy+"%");
+		List<MdPalletEntity> mdPalletEntities = new ArrayList<MdPalletEntity>();
+		//查询托盘
+		String hql1 = "from MdPalletEntity  where 1 = 1 AND binBianMa = ? order by updateDate desc";
+		for(MdBinEntity mdBinEntity:mdBinEntities) {
+			//查询已经放置的托盘,根据更新时间排序
+			List<MdPalletEntity> mdPList = systemService.findHql(hql1, mdBinEntity.getKuWeiBianMa());
+			if(mdPList!=null && !mdPList.isEmpty()) {
+				//已放置托盘的数据
+				int numMax = Integer.parseInt(mdBinEntity.getMingXi2());
+				int mdPListSize = 0;
+				if(mdPList != null) {
+					mdPListSize = mdPList.size();
+				}
+				//取整//取余
+				int rnum = mdPListSize/numMax+mdPListSize%numMax;
+				int p = 0;
+				//获取托盘点坐标,pos形式{0:2},{0:3},{0:4}
+				String pos = mdBinEntity.getMingXi1();
+				if(pos != null) {
+					String[] posArray =  pos.split(",");
+					for(int i=0;i<posArray.length;i++) {
+						if(posArray[i].equals(xy)) {
+							p = i;
+						}
+					}
+				}
+				//逻辑有点复杂
+				for(int i=0;i<rnum;i++) {
+					if(i==p) {
+						if(p+1 != rnum) {
+							mdPalletEntities.add(mdPList.get(i*numMax));
+							mdPalletEntities.add(mdPList.get(i*numMax+1));
+						}
+						if(p+1 == rnum && mdPListSize%numMax == 0) {
+							mdPalletEntities.add(mdPList.get(i*numMax));
+							mdPalletEntities.add(mdPList.get(i*numMax+1));
+						}
+						if(p+1 == rnum && mdPListSize%numMax != 0) {
+							mdPalletEntities.add(mdPList.get(i*numMax));
+						}
+					}
+				}		
+			}
+		}
+		return new ModelAndView("com/zzjee/md/mdavabin-detail").addObject("mdPallets", mdPalletEntities);
+	}
+	/**
+	 * _代表过道，f代表有托盘，e代表空位
+	 * @param baStore
+	 * @return
+	 */
+	private String[] mdBinView(BaStoreEntity baStore) {
+		int x = 0;
+		int y = 0;
+		if(baStore.getStoreW() != null) {
+			x = Integer.parseInt(baStore.getStoreW());
+		}
+		if(baStore.getStoreL() != null) {
+			y = Integer.parseInt(baStore.getStoreL());
+		}
+		String[] views = new String[y];
+		if(x !=0 && y != 0) {
+			//先初始化过道
+			for(int i = 0;i<y;i++) {
+				String s = "";
+				for(int j=0;j<x;j++) {
+					s+="_";
+				}
+				views[i] = s;
+			}
+			List<MdBinEntity> mdList = systemService.findByProperty(MdBinEntity.class, "binStore", baStore.getStoreCode());
+			//初始化托盘及查询已放托盘
+			for(MdBinEntity mdBinEntity:mdList) {
+				//获取托盘点坐标,pos形式{0:2},{0:3},{0:4}
+				String pos = mdBinEntity.getMingXi1();
+				if(pos != null) {
+					String[] posArray =  pos.split(",");
+					for(String p:posArray) {
+						String[] ps = p.replace("{", "").replace("}", "").split(":");
+						int x1 = Integer.parseInt(ps[0]);
+						int y1 = Integer.parseInt(ps[1]);
+						StringBuilder sb = new StringBuilder(views[x1]);
+						views[x1] = sb.replace(y1,y1+1,"e").toString();
+					}
+				}
+				//查询已经放置的托盘
+				List<MdPalletEntity> mdPList = systemService.findByProperty(MdPalletEntity.class, "binBianMa", mdBinEntity.getKuWeiBianMa());
+				//重置已放置托盘的数据
+				int numMax = Integer.parseInt(mdBinEntity.getMingXi2());
+				int mdPListSize = 0;
+				if(mdPList != null) {
+					mdPListSize = mdPList.size();
+				}
+				if(mdPListSize != 0) {
+					//取整//取余
+					int rnum = mdPListSize/numMax+mdPListSize%numMax;
+					if(pos != null) {
+						String[] posArray =  pos.split(",");
+						for(int i=0;i< posArray.length;i++) {
+							if(i<rnum){
+								String[] ps = posArray[i].replace("{", "").replace("}", "").split(":");
+								int x1 = Integer.parseInt(ps[0]);
+								int y1 = Integer.parseInt(ps[1]);
+								StringBuilder sb = new StringBuilder(views[x1]);
+								views[x1] = sb.replace(y1,y1+1,"f").toString();
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return views;
 	}
 
 	/**
@@ -151,40 +293,40 @@ public class MdBinController extends BaseController {
 			String tsql = "select * "
 					+ "  from wv_bin_all ws  where 1 = 1 ";
 			if(!StringUtil.isEmpty(req.getParameter("binstore"))){
-				 tsql =  tsql  + " and ws.bin_store like  '%"+req.getParameter("binstore")+"%' ";
+				tsql =  tsql  + " and ws.bin_store like  '%"+req.getParameter("binstore")+"%' ";
 			}
 			if(!StringUtil.isEmpty(req.getParameter("binid"))){
-				 tsql =  tsql   + "   and ws.binid like  '%"+req.getParameter("binid")+"%' ";
+				tsql =  tsql   + "   and ws.binid like  '%"+req.getParameter("binid")+"%' ";
 			}
 			if(!StringUtil.isEmpty(req.getParameter("des"))){
-				 tsql =  tsql  + "  and  ws.des like  '%"+req.getParameter("des")+"%' ";
+				tsql =  tsql  + "  and  ws.des like  '%"+req.getParameter("des")+"%' ";
 			}
-					System.out.print(tsql);
+			System.out.print(tsql);
 			List<Map<String, Object>> resultt = systemService
 					.findForJdbc(tsql);
-//				list = this.tSSmsService.getMsgsList(curUser,curDate);
-				//将List转换成JSON存储
-				JSONArray result = new JSONArray();
-		        if(resultt!=null && resultt.size()>0){
-		        	for(int i=0;i<resultt.size();i++){
-		    			JSONObject jsonParts = new JSONObject();
-		    			jsonParts.put("bin_store", resultt.get(i).get("bin_store"));
-		    			jsonParts.put("binid", resultt.get(i).get("binid"));
-		    			jsonParts.put("des", resultt.get(i).get("des"));
-		    			jsonParts.put("tincount", resultt.get(i).get("tincount"));
-			    		result.add(jsonParts);
-		    		}
-		        	j.setObj(resultt.size());
+			//				list = this.tSSmsService.getMsgsList(curUser,curDate);
+			//将List转换成JSON存储
+			JSONArray result = new JSONArray();
+			if(resultt!=null && resultt.size()>0){
+				for(int i=0;i<resultt.size();i++){
+					JSONObject jsonParts = new JSONObject();
+					jsonParts.put("bin_store", resultt.get(i).get("bin_store"));
+					jsonParts.put("binid", resultt.get(i).get("binid"));
+					jsonParts.put("des", resultt.get(i).get("des"));
+					jsonParts.put("tincount", resultt.get(i).get("tincount"));
+					result.add(jsonParts);
+				}
+				j.setObj(resultt.size());
 
 
 				Map<String,Object> attrs = new HashMap<String, Object>();
 				attrs.put("messageList", result);
-//				String tip = MutiLangUtil.getMutiLangInstance().getLang("message.tip");
-//				attrs.put("tip", tip);
-//				String seeAll = MutiLangUtil.getMutiLangInstance().getLang("message.seeAll");
-//				attrs.put("seeAll", seeAll);
+				//				String tip = MutiLangUtil.getMutiLangInstance().getLang("message.tip");
+				//				attrs.put("tip", tip);
+				//				String seeAll = MutiLangUtil.getMutiLangInstance().getLang("message.seeAll");
+				//				attrs.put("seeAll", seeAll);
 				j.setAttributes(attrs);
-		    }
+			}
 		} catch (Exception e) {
 			j.setSuccess(false);
 		}
@@ -197,7 +339,7 @@ public class MdBinController extends BaseController {
 	 *
 	 * @return
 	 */
-	 @RequestMapping(params = "doBatchDel")
+	@RequestMapping(params = "doBatchDel")
 	@ResponseBody
 	public AjaxJson doBatchDel(String ids,HttpServletRequest request){
 		String message = null;
@@ -206,8 +348,8 @@ public class MdBinController extends BaseController {
 		try{
 			for(String id:ids.split(",")){
 				MdBinEntity mdBin = systemService.getEntity(MdBinEntity.class,
-				id
-				);
+						id
+						);
 				mdBin.setTingYong("Y");
 				mdBinService.saveOrUpdate(mdBin);
 				systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
@@ -243,14 +385,14 @@ public class MdBinController extends BaseController {
 				}
 			}
 
-//		    MdBinEntity mdBin1 = systemService.findUniqueByProperty(MdBinEntity.class, "kuWeiBianMa", mdBin.getKuWeiBianMa());
-            if(mdb ==null ){
-    			mdBinService.save(mdBin);
-    			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
-            }else{
-    			message = "库位编码或者库位条码已经存在";
-                j.setSuccess(false);
-            }
+			//		    MdBinEntity mdBin1 = systemService.findUniqueByProperty(MdBinEntity.class, "kuWeiBianMa", mdBin.getKuWeiBianMa());
+			if(mdb ==null ){
+				mdBinService.save(mdBin);
+				systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
+			}else{
+				message = "库位编码或者库位条码已经存在";
+				j.setSuccess(false);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 			message = "仓位定义添加失败";
@@ -339,7 +481,7 @@ public class MdBinController extends BaseController {
 		modelMap.put(NormalExcelConstants.FILE_NAME,"仓位定义");
 		modelMap.put(NormalExcelConstants.CLASS,MdBinEntity.class);
 		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("仓位定义列表", "导出人:"+ResourceUtil.getSessionUserName().getRealName(),
-			"导出信息"));
+				"导出信息"));
 		modelMap.put(NormalExcelConstants.DATA_LIST,mdBins);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
@@ -352,12 +494,12 @@ public class MdBinController extends BaseController {
 	@RequestMapping(params = "exportXlsByT")
 	public String exportXlsByT(MdBinEntity mdBin,HttpServletRequest request,HttpServletResponse response
 			, DataGrid dataGrid,ModelMap modelMap) {
-    	modelMap.put(NormalExcelConstants.FILE_NAME,"仓位定义");
-    	modelMap.put(NormalExcelConstants.CLASS,MdBinEntity.class);
-    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("仓位定义列表", "导出人:"+ResourceUtil.getSessionUserName().getRealName(),
-    	"导出信息"));
-    	modelMap.put(NormalExcelConstants.DATA_LIST,new ArrayList());
-    	return NormalExcelConstants.JEECG_EXCEL_VIEW;
+		modelMap.put(NormalExcelConstants.FILE_NAME,"仓位定义");
+		modelMap.put(NormalExcelConstants.CLASS,MdBinEntity.class);
+		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("仓位定义列表", "导出人:"+ResourceUtil.getSessionUserName().getRealName(),
+				"导出信息"));
+		modelMap.put(NormalExcelConstants.DATA_LIST,new ArrayList());
+		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
 
 	@SuppressWarnings("unchecked")

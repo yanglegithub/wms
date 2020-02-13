@@ -245,24 +245,23 @@
 						</div>
 			       <div class="row show-grid">
 			            <div class="col-xs-3 text-center">
-			          	<b  >备注1</b>
+			          	<b>托盘位置</b>
 			          </div>
 			          <div class="col-xs-3">
 								<input id="mingXi1" name="mingXi1" type="text" class="form-control" 
 									ignore="ignore" style="text-align:right"   />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">备注1</label>
+						<label class="Validform_label" style="display: none">托盘位置</label>
 			          </div>
 			               <div class="col-xs-3 text-center">
-			          	<b  >备注2</b>
+			          	<b>托盘层高</b>
 			          </div>
 			          <div class="col-xs-3">
 								<input id="mingXi2" name="mingXi2" type="text" class="form-control" 
 									ignore="ignore" style="text-align:right"   />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
-						<label class="Validform_label" style="display: none">备注2</label>
+						<label class="Validform_label" style="display: none">托盘层高</label>
 			          </div>
-			          
 			          			               <div class="col-xs-3 text-center">
 			          	<b  >动线</b>
 			          </div>

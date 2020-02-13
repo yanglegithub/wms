@@ -37,9 +37,9 @@
     <t:dgCol title="停用"  field="tingYong"    queryMode="group" dictionary="sf_yn" width="70"></t:dgCol>
     <t:dgCol title="备注"  field="mingXi"    queryMode="group"  width="120"></t:dgCol>
 
-    <t:dgCol title="备注1"  field="mingXi1"    queryMode="group"  width="120"></t:dgCol>
+    <t:dgCol title="托盘位置"  field="mingXi1"    queryMode="group"  width="120"></t:dgCol>
 
-    <t:dgCol title="备注2"  field="mingXi2"    queryMode="group"  width="120"></t:dgCol>
+    <t:dgCol title="托盘层高"  field="mingXi2"    queryMode="group"  width="120"></t:dgCol>
 
 <%--    <t:dgCol title="操作" field="opt" width="100"></t:dgCol> --%>
    <t:dgDelOpt title="停用" url="mdBinController.do?doDel&id={id}" urlclass="ace_button"  urlfont="fa-trash-o"  exp="tingYong#ne#Y"/>

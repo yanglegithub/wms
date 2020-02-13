@@ -60,6 +60,12 @@ public class BaStoreEntity implements java.io.Serializable {
 	/**nc仓库主键id*/
 	@Excel(name="nc仓库主键id")
 	private java.lang.String ncPkid;
+	/**仓库宽度*/
+	@Excel(name="仓库宽度")
+	private java.lang.String storeW;
+	/**仓库长度*/
+	@Excel(name="仓库长度")
+	private java.lang.String storeL;
 
 	/**
 	 *方法: 取得java.lang.String
@@ -265,4 +271,21 @@ public class BaStoreEntity implements java.io.Serializable {
 	public void setNcPkid(String ncPkid) {
 		this.ncPkid = ncPkid;
 	}
+	@Column(name ="STORE_W",nullable=true,length=256)
+	public java.lang.String getStoreW() {
+		return storeW;
+	}
+
+	public void setStoreW(java.lang.String storeW) {
+		this.storeW = storeW;
+	}
+	@Column(name ="STORE_L",nullable=true,length=256)
+	public java.lang.String getStoreL() {
+		return storeL;
+	}
+
+	public void setStoreL(java.lang.String storeL) {
+		this.storeL = storeL;
+	}
+	
 }
