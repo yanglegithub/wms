@@ -121,9 +121,9 @@ public class BiController extends BaseController {
                 "    floor(sum(BASE_GOODSCOUNT)) as amount " +
                 "FROM" +
                 "    wm_to_down_goods where ORDER_ID <> 'ZY'   " +
-                "group by DATE_FORMAT(create_date, '%Y-%m-%d') " +
-                "order by DATE_FORMAT(create_date, '%Y-%m-%d') desc " +
-                "limit 7)  temptable order by create_date  ");
+                "group by DATE_FORMAT(create_date, '%Y-%m') " +
+                "order by DATE_FORMAT(create_date, '%Y-%m') desc " +
+                "limit 6)  temptable order by create_date  ");
 //		List userBroswerList = systemService.(sb.toString());
         List<Map<String,Object>> maplist=systemService.findForJdbc(sb.toString());
 //        StringBuffer sbconut = new StringBuffer();
@@ -178,43 +178,25 @@ public class BiController extends BaseController {
         StringBuffer sb = new StringBuffer();
         sb.append("select * from ( " +
                 "SELECT  " +
-                "    GOODS_name as goodsid, " +
+                "    DATE_FORMAT(create_date, '%Y-%m-%d') as create_date, " +
                 "    floor(sum(BASE_GOODSCOUNT)) as amount " +
                 "FROM" +
                 "    wm_to_up_goods where ORDER_ID <> 'ZY'   " +
-                "group by GOODS_ID   " +
-                ")  temptable  order by amount desc limit 6  ");
-//		List userBroswerList = systemService.(sb.toString());
+                "group by DATE_FORMAT(create_date, '%Y-%m') " +
+                "order by DATE_FORMAT(create_date, '%Y-%m') desc " +
+                "limit 6)  temptable order by create_date  ");
         List<Map<String,Object>> maplist=systemService.findForJdbc(sb.toString());
-//        StringBuffer sbconut = new StringBuffer();
-//        sbconut.append("SELECT  floor(sum(or_Amount)) as amount  FROM T_Kp_Order_One  where cus_name is not null    ");
-//
-//        List<Map<String,Object>> mapcount=systemService.findForJdbc(sbconut.toString());
-//		Double count = systemService.getCountForJdbc("SELECT COUNT(1) FROM T_S_Log WHERE 1=1");
         List lt = new ArrayList();
         //hc = new Highchart();
         hc.setName("近半年入库数量");
         hc.setType(reportType);
         Map<String, Object> map;
-//        Double count = Double.parseDouble(mapcount.get(0).get("amount").toString());
-
         if (maplist.size() > 0) {
             for (Map<String,Object> object : maplist) {
                 map = new HashMap<String, Object>();
                 Map<String,Object> obj =   object;
                 map.put("name", obj.get("goodsid").toString());
                 map.put("y",  (int) Double.parseDouble(obj.get("amount").toString()));
-//                Double groupCount = 0.00;
-//                try{
-//                    groupCount =  Double.parseDouble(obj.get("amount").toString());
-//                }catch (Exception e){
-//
-//                }
-//                Double  percentage = 0.0;
-//                if (count != null && count.intValue() != 0) {
-//                    percentage = new Double(groupCount)/count;
-//                }
-//                map.put("percentage", percentage*100);
                 lt.add(map);
             }
         }

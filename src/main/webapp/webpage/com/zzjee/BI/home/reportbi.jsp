@@ -35,7 +35,6 @@
                     success : function(jsondata) {
                         data = eval(jsondata);
                         var xAxisCategories = new Array();
-
                         for(var i = 0; i < data[0].data.length; i++){
                             xAxisCategories[i] = data[0].data[i].name;
                         }
@@ -58,9 +57,7 @@
                                 formatter: function() {
                                     return  '<b>'+this.point.name + '</b>:' +  Highcharts.numberFormat(this.y, 0) ;
                                 }
-
                             },
-
                             plotOptions : {
                                 pie : {
                                     allowPointSelect : true,
@@ -89,7 +86,7 @@
 			var chart;
 			$.ajax({
 				type : "POST",
-				url : "BiController.do?cpNameupCount&reportType=pie",
+				url : "BiController.do?cpNameupCount&reportType=line",
 				success : function(jsondata) {
 					data = eval(jsondata);
                     var xAxisCategories = new Array();
@@ -164,8 +161,6 @@
 							<h3 class="media-heading" id=x> </h3>
 							<%-- <h3 class="media-heading" id=x2> 您有 ${num5} 件商品需要做库存调整，请及时调整</h3> --%>
 						</div>
-
-
 					</div>
 
 			</div>
@@ -173,7 +168,6 @@
 	</div>
 <div style="padding-bottom: -100px;padding-top: -100px;  height: 140px ">
 	<div  >
-
 		<div class="col-lg-3 col-sm-3 col-xs-12 info-panel">
 			<div class="widget widget-shadow">
 				<div class="widget-content bg-white padding-20">
@@ -234,13 +228,10 @@
 				</div>
 			</div>
 		</div>
-
 		</div>
 </div>
-
-
 <span id="containerPie" style="float: left; width: 48%; height:350px;"></span>
-<span id="containerdayline" style="float: left; width: 48%; height:350px;"></span>
+<span id="containerdayline" style="float: right; width: 48%; height:350px;"></span>
 <!-- <span id="containerCol" style="float: left; width: 31%;height:350px;"></span> -->
 
 <script type="text/javascript">
