@@ -1,0 +1,409 @@
+body{
+	margin:0;
+	padding:0;
+	background-color:#000;
+	flex-wrap: nowrap;
+	overflow-x: scroll;
+}
+#main{
+	width:1923px;
+	height:1072px;
+}
+#top{
+	height:80px;
+	line-height: 80px;
+	background-color: #0a1528;
+}
+#top img{
+	padding-left: 24px;
+}
+#main-b{
+	width: 1903px;
+	height:982px;
+	margin: 0 auto;
+}
+#dboard-left{
+	float:left;
+	width:395px;
+	height:982px;
+}
+#materialIn,#materialOut,#productIn,#productOut{
+	background-color: #0a1528;
+	margin-top: 10px;
+	border-radius:2px;
+}
+#materialIn{
+	height:243px;
+}
+#materialOut{
+	height:235px;
+}
+#productIn{
+	height:233px;
+}
+#productOut{
+	height:243px;
+}
+#materialIn-b,#tmarterIn,#emarteriaIn{
+	height:203px;
+}
+#materialOut-b,#tmarterOut,#emarteriaOut{
+	height:195px;
+}
+#productIn-b{
+	height:193px;
+}
+#productOut-b{
+	height:203px;
+}
+#materiaIn-top,#materiaOut-top,#productIn-top,#productOut-top{
+	height:40px;
+	font-size: 16px;
+	font-family: MicrosoftYaHei;
+	color: rgb(255,255,255,0.4);
+	line-height: 40px;
+	background: url(image/分割线拷贝.png) repeat-x bottom;
+}
+#materiaIn-top,#materiaOut-top,#productIn-top,#productOut-top img{
+	padding-left:15px;
+}
+#tmarterIn,#emarteriaIn,#tmarterOut,#emarteriaOut,#tproductIn,#eproductIn,#tproductOut,#eproductOut{
+	float:left;
+	
+}
+#left-img{
+	background: url(image/矩形1027.png) no-repeat bottom;
+	margin-top: 20px;
+}
+#left-img span{
+	font-size: 14px;
+	font-family: MicrosoftYaHei;
+	color: rgb(255,255,255,0.4);
+	margin-left: 70px
+}
+#number span{
+	margin-left: 70px;
+	font-size: 32px;
+	font-family: LcdD;
+	color: #00d7e9;
+}
+#left-right{
+	background:url(image/总量.png) no-repeat ;
+	height:136px;width:136px;
+	margin:33px 30px;
+	text-align: center;
+}
+#left-right2{
+	background:url(image/总量_22.png) no-repeat ;
+	height:136px;width:136px;
+	margin:33px 30px;
+	text-align: center;
+}
+#left-i span{
+	line-height: 60px;
+}
+input{
+	background-color: rgb(2,13,31);
+	color: rgb(134,141,157);
+	position:relative;
+	left:7%;
+}
+#dboard-right{
+	float:left;
+	width:1508px;
+	height:982px;
+}
+#dboard-right-top{
+	width:1508px;
+	height:487px;
+}
+#wMap1{
+	float:left;
+	width:1093px;
+	height:487px;
+	display:block;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 10px;
+	border-radius:2px;
+}
+#wMap1 img{
+	padding-left: 15px;
+	float:left;
+	margin:10px 5px;
+}
+#wMap1-title ul{
+	display:inline;
+}
+#wMap1-title li{
+	list-style-type: none;
+	float:left;
+	line-height: 40px;
+	margin:0 15px;
+	text-align: center;
+}
+#wMap1-title a{
+	text-decoration: none;
+	color: rgb(255,255,255,0.4);
+}
+#wMap2{
+	float:left;
+	width:1093px;
+	min-height:487px;
+	display:none;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 10px;
+	border-radius:2px;
+}
+#wMap-b{
+	width:100%;
+	min-height:447px;
+}
+#coldStorage{
+	float:left;
+	width:16.666%;
+	background-color:rgb(26,66,91);
+	text-align: center;
+	line-height: 447px;
+}
+#consumablesLibrary{
+	float:left;
+	width:8.333%;
+	background-color:rgb(26,66,91);
+	text-align: center;
+	line-height: 447px;
+}
+#map{
+	float:left;
+	width:83.333%;
+	height: 273px;
+}
+#map table{
+	display:inline;
+}
+#map td{
+	width:15px;
+	height:15px;
+	background-color: rgb(22,47,67);
+}
+#nothing{
+	clear:both;
+	min-height: 145px;
+}
+#t1-1{
+	float:left;
+	margin-left: 10%;
+}
+#t1-2{
+	float:left;
+	margin-left: 5%;
+}
+#t1-3{
+	float:left;
+	margin-left: 5%;
+}
+#t1-4{
+	float:left;
+	margin-left: 5%;
+}
+#touliaokou1{
+	float:left;
+	width:70px;
+	height:100px;
+	text-align: center;
+	background:url(image/矩形934拷贝5-.png) no-repeat;
+	margin-left: 2%;
+	color:rgb(255,255,255,0.4);
+}
+#touliaokou2{
+	float:left;
+	width:70px;
+	height:100px;
+	text-align: center;
+	background:url(image/矩形934拷贝5-.png) no-repeat;
+	margin-left: 10%;
+	color: rgb(255,255,255,0.4);
+}
+#xiyouliao{
+	float:right;
+	width:120px;
+	height:150px;
+	text-align: center;
+	line-height: 150px;
+	color: rgb(255,255,255,0.4);
+	background-color:rgb(22,47,67);
+}
+#t1-5{
+	float:left;
+	margin-left: 10%;
+}
+#t1-6{
+	float:left;
+	margin-left: 20%;
+}
+#t1-7{
+	float:left;
+	margin-left: 4%;
+}
+
+#t2-1{
+	float:left;
+	margin-left: 9%;
+}
+#t2-2{
+	float:left;
+	margin-left: 9%;
+}
+#t2-3{
+	float:left;
+	margin-left: 4%;
+}
+#t2-4{
+	float:left;
+	margin-left: 9%;
+}
+#t2-5{
+	float:left;
+	margin-left: 9%;
+}
+#t2-6{
+	float:left;
+	margin-left: 3%;
+}
+#t2-7{
+	float:left;
+}
+#t2-8{
+	float:left;
+	margin-left: 3%;
+}
+#t2-9{
+	float:left;
+	margin-left: 2%;
+}
+#t2-10{
+	float:left;
+	margin-left: 2%;
+}
+#minerals{
+	float:left;
+	width:70px;
+	height:100px;
+	text-align: center;
+	background:url(image/矩形934拷贝5.png) no-repeat;
+	margin-left: 15%;
+	margin-top:14%;
+	color:rgb(255,255,255,0.4);
+}
+#vitamins{
+	float:left;
+	width:70px;
+	height:100px;
+	text-align: center;
+	background:url(image/矩形934拷贝5.png) no-repeat;
+	margin-left: 5%;
+	margin-top:14%;
+	color:rgb(255,255,255,0.4);
+}
+#lTask{
+	float:left;
+	width:405px;
+	height:487px;
+}
+#inTask{
+	height:243px;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 10px;
+	border-radius:2px;
+}
+#outTask{
+	height:235px;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 10px;
+	border-radius:2px;
+}
+#inTask-title,#outTask-title,#wMap1-title,#wMap2-title{
+	background: url(image/分割线拷贝.png) repeat-x bottom;
+	height:40px;
+	font-size: 16px;
+	font-family: MicrosoftYaHei;
+	line-height: 40px;
+	color:rgba(255,255,255,0.4);
+}
+#inTask-title,#outTask-title img{
+	padding-left: 15px;
+}
+#inTask-b{
+	height: 203px;
+}
+#outTask-b{
+	height: 195px;
+}
+#inTask1,#inTask2,#outTask1,#outTask2{
+	width: 50%;
+	float: left;
+	background:url(image/今日入库总数.png) no-repeat center;
+	text-align: center;
+}
+#inTask1,#inTask2{
+	height:203px;
+}
+#outTask1,#outTask2{
+	height: 195px;
+}
+#inTask1,#inTask2,#outTask1,#outTask2 p{
+	padding-top: 15px;
+	font-family: MicrosoftYaHei;
+	font-size: 14px;
+	color:#fff;
+}
+#dboard-right-b{
+	width:1508px;
+	height:485px;
+}
+#positionManagement{
+	float:left;
+	width:431px;
+	height:485px;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 10px;
+	border-radius:2px;
+
+}
+#palletManagement{
+	float:left;
+	width:431px;
+	height:485px;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 9px;
+	border-radius:2px;
+}
+#positionManagement_top,#palletManagement_top,#eEStatistics_top{
+	background: url(image/分割线拷贝.png) repeat-x bottom;
+	height:40px;
+	font-size: 16px;
+	font-family: MicrosoftYaHei;
+	color: rgb(255,255,255,0.4);
+	line-height: 40px;
+}
+#positionManagement_top,#palletManagement_top,#eEStatistics_top img{
+	padding-left: 15px;
+}
+#eEStatistics{
+	float:left;
+	width:617px;
+	height:485px;
+	background-color: #0a1528;
+	margin-top:10px;
+	margin-left: 9px;
+	border-radius:2px;
+}
+#epositionManagement,#epalletManagement,#eeEStatistics{
+	height:445px;
+	color:#fff;
+}

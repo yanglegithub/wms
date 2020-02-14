@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>dashBoard</title>
+  <script src="echarts.min.js" type="text/javascript"></script>
+  <script src="echarts-liquidfill.min.js"></script>
+  <script src="wms.js" type="text/javascript"></script>
+  <link href="wms.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="main">
+  <div id="top">
+    <img src="image/logo.png" style="display: inline-block; vertical-align: middle;"></image>
+  </div>
+  <div id="main-b">
+    <div id="dboard-left">
+      <div id="materialIn">
+        <div id="materiaIn-top">
+          <img src="image/组7.png"/>
+          &nbsp&nbsp原料入库
+        </div>
+        <div id="materiaIn-b">
+          <div id="tmarterIn" style="width:50%;">
+            <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
+            <div id=number><span>6532</span></div>
+
+            <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
+            <div id=number><span>2540</span></div>
+
+          </div>
+          <div id="emarteriaIn" style="width:50%;">
+            <div id="left-right"><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span><br/><br/>
+              <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
+              <img src="image/组8.png"/>
+              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b">22%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="materialOut">
+        <div id="materiaOut-top">
+          <img src="image/组7.png"/>
+          &nbsp&nbsp原料出库
+        </div>
+        <div id="materiaOut-b">
+          <div id="tmarterOut" style="width:50%;">
+            <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
+            <div id=number><span>6532</span></div>
+            <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
+            <div id=number><span>2540</span></div>
+          </div>
+          <div id="emarteriaOut" style="width:50%;">
+            <div id="left-right"><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span><br/><br/>
+              <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
+              <img src="image/组9.png"/>
+              <span style="font-size: 16px;font-family: LcdD;color:#f2363b">8%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="productIn">
+        <div id="productIn-top">
+          <img src="image/组7.png"/>
+          &nbsp&nbsp成品入库
+        </div>
+        <div id="productIn-b">
+          <div id="tproductIn" style="width:50%;">
+            <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
+            <div id=number><span>6532</span></div>
+            <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
+            <div id=number><span>2540</span></div>
+          </div>
+          <div id="eproductIn" style="width:50%;">
+            <div id="left-right2"><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span><br/><br/>
+              <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
+              <img src="image/组8.png"/>
+              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b">18%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="productOut">
+        <div id="productOut-top">
+          <img src="image/组7.png"/>&nbsp&nbsp成品出库
+        </div>
+        <div id="productOut-b">
+          <div id="tproductOut" style="width:50%;">
+            <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
+            <div id=number><span>6532</span></div>
+            <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
+            <div id=number><span>2540</span></div>
+          </div>
+          <div id="eproductOut" style="width:50%;">
+            <div id="left-right2"><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span>
+              <br/><br/>
+              <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
+              <img src="image/组8.png"/>
+              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b">32%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="dboard-right" style="">
+      <div id="dboard-right-top">
+        <div id="wMap1">
+          <div id="wMap1-title">
+            <img src="image/组7.png"/>
+            <ul>
+              <li><a href="#">原料仓</a></li>
+              <li><a href="wms2.html">成品仓</a></li>
+            </ul>
+          </div>
+          <div id="wMap-b">
+            <div id="coldStorage">冷藏库</div>
+            <div id="map">
+              <table id="t1-1">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+
+              <table id="t1-2">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+
+              <table id="t1-3">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+
+              <table id="t1-4">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+              <div id="touliaokou1">投料口</div>
+              <div id="touliaokou2">投料口</div>
+
+              <br/>
+              <div id="nothing"></div>
+
+              <div id="down">
+                <table id="t1-5">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+
+                <table id="t1-6">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td style="background-color:rgba(10,21,39,1)"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+
+                <table id="t1-7">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+
+                <div id="xiyouliao">稀有料</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div id="lTask">
+          <div id="inTask">
+            <div id="inTask-title">
+              <img src="image/组7.png"/>
+              &nbsp&nbsp&nbsp入库任务
+            </div>
+            <div id="inTask-b">
+              <div id="inTask1">
+                <p>今日入库总数<br/><br/><br/><span style="font-family: LcdD;font-size: 36px;color:#00d7e9;">203</span></p>
+              </div>
+              <div id="inTask2">
+                <p>今日入库总数<br/><br/><br/><span style="font-family: LcdD;font-size: 36px;color:#00d7e9;">12503</span></p>
+              </div>
+            </div>
+          </div>
+          <div id="outTask">
+            <div id="outTask-title">
+              <img src="image/组7.png"/>
+              &nbsp&nbsp&nbsp出库任务
+            </div>
+            <div id="outTask-b">
+              <div id="outTask1">
+                <p>今日出库总数<br/><br/><br/><span style="font-family: LcdD;font-size: 36px;color:#00d7e9;">584</span></p>
+              </div>
+              <div id="outTask2">
+                <p>今日出库总数<br/><br/><br/><span style="font-family: LcdD;font-size: 36px;color:#00d7e9;">6985</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="dboard-right-b">
+        <div id="positionManagement">
+          <div id="positionManagement_top"><img src="image/组7.png"/>&nbsp&nbsp仓位管理</div>
+          <div id="epositionManagement"></div>
+        </div>
+        <div id="palletManagement">
+          <div id="palletManagement_top"><img src="image/组7.png"/>&nbsp&nbsp托盘管理</div>
+          <div id="epalletManagement"></div>
+        </div>
+        <div id="eEStatistics">
+          <div id="eEStatistics_top">
+            <img src="image/组7.png"/>
+            &nbsp&nbsp能耗劳效统计
+          </div>
+          <div id="eeEStatistics">
+            <!--    		<div id="aaa" style="width:368px;height:135"></div>
+                    <div id="bbb" style="width:368px;height:136"></div>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+      var myChart1 = echarts.init(document.getElementById('epositionManagement'));
+      var option1 = {
+          graphic: [{
+              type: 'group',
+              children: [{
+                  type: 'text',
+                  left: 50,
+                  top: 300,
+                  style: {
+                      fill: '#fff',
+                      text: '1785',
+                      font: '72px LcdD'
+                  }
+              }, {
+                  type: 'text',
+                  left: 200,
+                  top: 340,
+                  style: {
+                      fill: '#fff',
+                      text: '个',
+                      font: '30px Microsoft YaHei'
+                  }
+              }, {
+                  type: 'text',
+                  left: 170,
+                  top: 390,
+                  style: {
+                      fill: 'rgba(255,255,255,0.5)',
+                      text: '仓位总量',
+                      font: '14px Microsoft YaHei'
+                  }
+              }]
+          }],
+          tooltip: {
+              trigger: 'item',
+              formatter: "{b}: {c} ({d}%)"
+          },
+          color: ['#15a0ff', '#e54545', '#9436d5', '#3da6d0'],
+          legend: {
+              orient: 'vertical',
+              x: '75%',
+              y: 'bottom',
+              data: ['占用', '空余', '损坏', '在修'],
+              itemGap: 7,
+              itemWidth: 15,
+              itemHeight: 5,
+              textStyle: {
+                  color: '#888888',
+                  fontSize: 10
+              }
+          },
+          series: [
+              {
+                  name: '访问来源',
+                  type: 'pie',
+                  radius: ['40%', '50%'],
+                  center: ['65%', '35%'],
+                  label: {
+                      normal: {
+                          show: false,
+                      }
+                  },
+                  labelLine: {
+                      normal: {
+                          show: false
+                      }
+                  },
+                  emphasis: {
+                      /*		label:{
+                            show:true
+                          },*/
+                      labelLine: {
+                          show: true
+                      }
+
+                  },
+                  data: [
+                      {
+                          value: 310, name: '空余', itemStyle: {
+                              normal: {//颜色渐变
+                                  color: new echarts.graphic.LinearGradient(
+                                      0, 0, 0, 1,
+                                      [
+                                          {offset: 0, color: '#f51511'},
+                                          {offset: 1, color: '#ff827a'}
+                                      ]
+                                  )
+                              }
+                          }
+                      },
+                      {
+                          value: 234, name: '损坏', itemStyle: {
+                              normal: {//颜色渐变
+                                  color: new echarts.graphic.LinearGradient(
+                                      0, 0, 0, 1,
+                                      [
+                                          {offset: 0, color: '#07ebfe'},
+                                          {offset: 1, color: '#44b6fe'}
+                                      ]
+                                  )
+                              }
+                          }
+                      },
+                      {
+                          value: 135, name: '在修', itemStyle: {
+                              normal: {//颜色渐变
+                                  color: new echarts.graphic.LinearGradient(
+                                      0, 0, 0, 1,
+                                      [
+                                          {offset: 0, color: '#afaef0'},
+                                          {offset: 1, color: '#8774f0'}
+                                      ]
+                                  )
+                              }
+                          }
+                      },
+                      {
+                          value: 335,
+                          name: '占用',
+                          selected: true,
+                          label: {show: true, formatter: '{b} \n\n {c}', color: "#fff"},
+                          labelLine: {show: true}
+                      }
+                  ]
+              }
+          ]
+      };
+      myChart1.setOption(option1);
+
+      var myChart2 = echarts.init(document.getElementById('epalletManagement'));
+      var option2 = {
+          graphic: [{
+              type: 'group',
+              children: [{
+                  type: 'text',
+                  left: 50,
+                  top: 300,
+                  style: {
+                      fill: '#fff',
+                      text: '4333',
+                      font: '72px LcdD'
+                  }
+              }, {
+                  type: 'text',
+                  left: 200,
+                  top: 340,
+                  style: {
+                      fill: '#fff',
+                      text: '个',
+                      font: '30px Microsoft YaHei'
+                  }
+              }, {
+                  type: 'text',
+                  left: 170,
+                  top: 390,
+                  style: {
+                      fill: 'rgba(255,255,255,0.5)',
+                      text: '托盘总量',
+                      font: '14px Microsoft YaHei'
+                  }
+              }]
+          }],
+          tooltip: {
+              trigger: 'item',
+              formatter: "{b}: {c} ({d}%)"
+          },
+          color: ['#4753f1', '#e54545', '#9436d5', '#3da6d0'],
+          legend: {
+              orient: 'vertical',
+              x: '75%',
+              y: 'bottom',
+              data: ['占用', '空余', '损坏', '在修'],
+              itemGap: 7,
+              itemWidth: 15,
+              itemHeight: 5,
+              textStyle: {
+                  color: '#888888',
+                  fontSize: 10
+              }
+          },
+          series: [
+              {
+                  name: '访问来源',
+                  type: 'pie',
+                  radius: ['40%', '50%'],
+                  center: ['38%', '35%'],
+                  label: {
+                      normal: {
+                          show: false,
+                      }
+                  },
+                  labelLine: {
+                      normal: {
+                          show: false
+                      }
+                  },
+                  emphasis: {
+                      /*		label:{
+                            show:true
+                          },*/
+                      labelLine: {
+                          show: true
+                      }
+
+                  },
+                  data: [
+                      {
+                          value: 310,
+                          name: '空余',
+                          selected: true,
+                          label: {show: true, formatter: '{b} \n\n {c}', color: "#fff"}, labelLine: {show: true}
+                      },
+                      {value: 234, name: '损坏',},
+                      {value: 135, name: '在修'},
+                      {value: 335, name: '占用'}
+                  ]
+              }
+          ]
+      };
+      myChart2.setOption(option2);
+
+      ///*
+      var myChart3 = echarts.init(document.getElementById('eeEStatistics'));
+      var dataAll = [
+          [2003, 3785, 2984, 2758, 3679, 2548, 3745, 2647, 2547, 3516, 3416, 2415, 4526, 3577, 2453, 3145, 2897, 2567, 2924, 3195, 3587, 3276, 2965, 2854, 3165],
+          [60, 69, 71, 65, 84, 75, 81, 68, 80, 78, 67, 73]
+      ];
+      var option3 = {
+          grid: [
+              {x: '13%', y: '9%', width: '80%', height: '35%'},
+              {x: '13%', y2: '7%', width: '80%', height: '35%'}
+          ],
+          xAxis: [{
+              gridIndex: 0,
+              type: 'category',
+              data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+              name: '日',
+              nameGap: 7,
+              nameTextStyle: {
+                  fontFamily: 'Microsoft YaHei',
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: 14
+              },
+              axisLine: {
+                  lineStyle: {
+                      color: 'rgba(255,255,255,0.5)'
+                  }
+              },
+              axisTick: {
+                  show: false
+              },
+              axisLabel: {},
+              splitLine: {
+                  show: true,
+                  lineStyle: {
+                      color: ['rgb(22,34,59)']
+                  }
+              }
+          },
+              {
+                  gridIndex: 1,
+                  type: 'category',
+                  data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                  axisLine: {
+                      show: false,
+                      lineStyle: {
+                          fontFamily: 'Microsoft YaHei',
+                          color: 'rgba(255,255,255,0.5)',
+                          fontSize: 12
+                      }
+                  },
+                  axisTick: {
+                      show: false
+                  }
+              }],
+          yAxis: [{
+              gridIndex: 0,
+              name: '耗电/度',
+              nameGap: 7,
+              nameLocation: 'end',
+              nameTextStyle: {
+                  fontFamily: 'Microsoft YaHei',
+                  color: 'rgba(255,255,255,0.5)',
+                  fontSize: 12
+              },
+              type: 'value',
+              axisLine: {
+                  show: false,
+                  lineStyle: {
+                      color: 'rgba(255,255,255,0.5)'
+                  }
+              },
+              axisTick: {
+                  show: false
+              },
+              splitLine: {
+                  show: false
+              }
+          },
+              {
+                  gridIndex: 1,
+                  name: '劳效/%',
+                  nameGap: 7,
+                  type: 'value',
+                  axisLine: {
+                      lineStyle: {
+                          color: '#888888'
+                      }
+                  },
+                  axisTick: {
+                      show: false
+                  },
+                  splitLine: {
+                      show: true,
+                      lineStyle: {
+                          color: ['rgb(22,34,59)']
+                      }
+                  }
+              }],
+          tooltip: {},
+          series: [{
+              name: 'I',
+              data: dataAll[0],
+              type: 'line',
+              xAxisIndex: 0,
+              yAxisIndex: 0,
+              smooth: true,
+              areaStyle: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                      offset: 0,
+                      color: 'rgb(54,132,182)'
+                  }, {
+                      offset: 1,
+                      color: 'rgb(6,35,56)'
+                  }])
+              },
+              itemStyle: {
+                  opacity: '0'
+              },
+              lineStyle: {
+                  type: 'solid',
+                  color: 'rgb(82,139,184)'
+              }
+          },
+              {
+                  name: 'II',
+                  type: 'bar',
+                  xAxisIndex: 1,
+                  yAxisIndex: 1,
+                  barWidth: 20,
+                  itemStyle: {
+                      color: new echarts.graphic.LinearGradient(
+                          0, 0, 0, 1,
+                          [
+                              {offset: 0, color: '#10b9c1'},
+                              {offset: 0.5, color: 'rgb(17,150,188)'},
+                              {offset: 1, color: '#156fc1'}
+                          ]
+                      )
+                  },
+                  data: dataAll[1]
+
+              }]
+      };
+      myChart3.setOption(option3);
+
+
+      window.onresize = function () {
+          myChart1.resize();
+          myChart2.resize();
+          myChart3.resize();
+      }
+
+  </script>
+
+
+</body>
+</html>
