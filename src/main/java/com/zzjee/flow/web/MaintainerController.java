@@ -150,7 +150,7 @@ public class MaintainerController<MdBinS> {
         map.putAll(temp);
         temp = wmStockBaseStockService.findQuaVar();
         map.putAll(temp);
-        temp = mdBinService.findBins();
+        temp = mdBinService.findBinsStatus();
         map.put("binUsed",temp.get("used"));
         map.put("binSum",temp.get("sum"));
         temp = mdPalletService.findPalletsStatus();

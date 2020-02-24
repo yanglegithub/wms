@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>dashBoard</title>
   <script src="echarts.min.js" type="text/javascript"></script>
-  <script src="echarts-liquidfill.min.js"></script>
+  <!--<script src="echarts-liquidfill.min.js"></script>-->
+  <script src="jquery-1.8.0.min.js" type="text/javascript"></script>
   <script src="wms.js" type="text/javascript"></script>
   <link href="wms.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -23,18 +24,18 @@
         <div id="materiaIn-b">
           <div id="tmarterIn" style="width:50%;">
             <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
-            <div id=number><span>6532</span></div>
+            <div id=number class="primeNumber"><span>6532</span></div>
 
             <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
-            <div id=number><span>2540</span></div>
+            <div id=number class="addNumber"><span>2540</span></div>
 
           </div>
           <div id="emarteriaIn" style="width:50%;">
             <div id="left-right"><br/>
-              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span><br/><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff" class="sumNumber">12534</span><br/><br/>
               <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
               <img src="image/组8.png"/>
-              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b">22%</span>
+              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b" class="incpercNumber">22%</span>
             </div>
           </div>
         </div>
@@ -47,16 +48,16 @@
         <div id="materiaOut-b">
           <div id="tmarterOut" style="width:50%;">
             <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
-            <div id=number><span>6532</span></div>
+            <div id=number class="primeNumber"><span>6532</span></div>
             <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
-            <div id=number><span>2540</span></div>
+            <div id=number class="addNumber"><span>2540</span></div>
           </div>
           <div id="emarteriaOut" style="width:50%;">
             <div id="left-right"><br/>
-              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span><br/><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff" class="sumNumber">12534</span><br/><br/>
               <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
               <img src="image/组9.png"/>
-              <span style="font-size: 16px;font-family: LcdD;color:#f2363b">8%</span>
+              <span style="font-size: 16px;font-family: LcdD;color:#f2363b" class="incpercNumber">8%</span>
             </div>
           </div>
         </div>
@@ -69,16 +70,16 @@
         <div id="productIn-b">
           <div id="tproductIn" style="width:50%;">
             <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
-            <div id=number><span>6532</span></div>
+            <div id=number class="primeNumber"><span>6532</span></div>
             <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
-            <div id=number><span>2540</span></div>
+            <div id=number class="addNumber"><span>2540</span></div>
           </div>
           <div id="eproductIn" style="width:50%;">
             <div id="left-right2"><br/>
-              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span><br/><br/>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff" class="sumNumber">12534</span><br/><br/>
               <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
               <img src="image/组8.png"/>
-              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b">18%</span>
+              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b" class="incpercNumber">18%</span>
             </div>
           </div>
         </div>
@@ -90,17 +91,17 @@
         <div id="productOut-b">
           <div id="tproductOut" style="width:50%;">
             <div id="left-img"><span><img src="image/库存.png"/>  期初</span></div>
-            <div id=number><span>6532</span></div>
+            <div id=number class="primeNumber"><span>6532</span></div>
             <div id="left-img"><span><img src="image/新增.png"/>  新增</span></div>
-            <div id=number><span>2540</span></div>
+            <div id=number class="addNumber"><span>2540</span></div>
           </div>
           <div id="eproductOut" style="width:50%;">
             <div id="left-right2"><br/>
-              <span style="font-size: 32px;font-family:LcdD;color:#fff">12534</span>
+              <span style="font-size: 32px;font-family:LcdD;color:#fff" class="sumNumber">12534</span>
               <br/><br/>
               <span style="font-size: 14px;font-family: MicrosoftYaHei;color:#fff">总量</span>
-              <img src="image/组8.png"/>
-              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b">32%</span></div>
+              <img src="image/组9.png"/>
+              <span style="font-size: 16px;font-family: LcdD;color:#26eb4b" class="incpercNumber">32%</span></div>
           </div>
         </div>
       </div>
@@ -598,6 +599,7 @@
     </div>
   </div>
   <script>
+      var baseurl = "http://localhost:8077/wms/";
       var myChart1 = echarts.init(document.getElementById('epositionManagement'));
       var option1 = {
           graphic: [{
@@ -676,7 +678,7 @@
                   },
                   data: [
                       {
-                          value: 310, name: '空余', itemStyle: {
+                          value: 310, name: '空闲', itemStyle: {
                               normal: {//颜色渐变
                                   color: new echarts.graphic.LinearGradient(
                                       0, 0, 0, 1,
@@ -689,7 +691,7 @@
                           }
                       },
                       {
-                          value: 234, name: '损坏', itemStyle: {
+                          value: 234, name: '停用', itemStyle: {
                               normal: {//颜色渐变
                                   color: new echarts.graphic.LinearGradient(
                                       0, 0, 0, 1,
@@ -701,7 +703,7 @@
                               }
                           }
                       },
-                      {
+                      /*{
                           value: 135, name: '在修', itemStyle: {
                               normal: {//颜色渐变
                                   color: new echarts.graphic.LinearGradient(
@@ -713,7 +715,7 @@
                                   )
                               }
                           }
-                      },
+                      },*/
                       {
                           value: 335,
                           name: '占用',
@@ -725,6 +727,20 @@
               }
           ]
       };
+      ajax({
+          method:"GET",
+          url:baseurl + "dashboardController.do?bins&storeCode=CK001",
+          callback:function (data) {
+              option1.legend.data = data.legend;
+              for (var i in option1.series[0].data) {
+                  option1.series[0].data[i].value = data[option1.series[0].data[i].name]
+              }
+              option1.graphic[0].children[0].style.text = data.sum;
+              myChart1.setOption(option1);
+          },
+          //params: {'storeCode':'CK001'},
+          type:'json'
+      })
       myChart1.setOption(option1);
 
       var myChart2 = echarts.init(document.getElementById('epalletManagement'));
@@ -769,7 +785,7 @@
               orient: 'vertical',
               x: '75%',
               y: 'bottom',
-              data: ['占用', '空余', '损坏', '在修'],
+              data: ['占用', '空闲', '损坏', '停用'],
               itemGap: 7,
               itemWidth: 15,
               itemHeight: 5,
@@ -806,17 +822,30 @@
                   data: [
                       {
                           value: 310,
-                          name: '空余',
+                          name: '空闲',
                           selected: true,
                           label: {show: true, formatter: '{b} \n\n {c}', color: "#fff"}, labelLine: {show: true}
                       },
                       {value: 234, name: '损坏',},
-                      {value: 135, name: '在修'},
+                      {value: 135, name: '停用'},
                       {value: 335, name: '占用'}
                   ]
               }
           ]
       };
+      ajax({
+          method:"GET",
+          url:baseurl + "dashboardController.do?pallets",
+          callback:function (data) {
+              option2.legend.data = data.legend;
+              for (var i in option2.series[0].data) {
+                  option2.series[0].data[i].value = data[option2.series[0].data[i].name]
+              }
+              option2.graphic[0].children[0].style.text = data.sum;
+              myChart2.setOption(option2);
+          },
+          type:'json'
+      })
       myChart2.setOption(option2);
 
       ///*

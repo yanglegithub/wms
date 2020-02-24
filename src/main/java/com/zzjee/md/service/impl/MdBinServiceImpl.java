@@ -43,7 +43,7 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
  	}
 
 	@Override
-	public Map<String, Object> findBins() {
+	public Map<String, Object> findBinsStatus() {
  		String sql =
 				"SELECT " +
 				"  SUM(IF (EXISTS ( " +
@@ -55,6 +55,22 @@ public class MdBinServiceImpl extends CommonServiceImpl implements MdBinServiceI
 				"FROM md_bin b " +
 				"WHERE b.ting_yong = 'N'";
  		Map result =  this.findOneForJdbc(sql);
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> findBinsStatus(String code) {
+		String sql =
+				"SELECT " +
+						"  SUM(IF (EXISTS ( " +
+						"      SELECT * FROM   md_pallet p " +
+						"      WHERE p.bin_bian_ma = b.ku_wei_bian_ma " +
+						"    ),1,0) " +
+						"  ) AS 'used', " +
+						"   SUM(1) AS 'sum' " +
+						"FROM md_bin b " +
+						"WHERE b.ting_yong = 'N' AND b.bin_store=?";
+		Map result =  this.findOneForJdbc(sql, code);
 		return result;
 	}
 

@@ -13,5 +13,7 @@ public interface MdBinServiceI extends CommonService{
 
  	public void saveOrUpdate(MdBinEntity entity) throws Exception;
 
- 	public Map<String, Object> findBins();
+ 	public Map<String, Object> findBinsStatus();
+
+ 	public Map<String, Object> findBinsStatus(String code);
 }

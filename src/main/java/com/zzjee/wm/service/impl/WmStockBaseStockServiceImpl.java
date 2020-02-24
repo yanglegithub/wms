@@ -1,6 +1,7 @@
 package com.zzjee.wm.service.impl;
 import com.zzjee.wm.service.WmStockBaseStockServiceI;
 import com.zzjee.wmutil.WmsContants;
+import org.activiti.explorer.ui.validator.LongValidator;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import com.zzjee.wm.entity.WmStockBaseStockEntity;
 import org.springframework.stereotype.Service;
@@ -41,14 +42,14 @@ public class WmStockBaseStockServiceImpl extends CommonServiceImpl implements Wm
 	public Map<String, Object> findQuaGroupByType() {
  		String sql =
 				"SELECT " +
-					"sum(wms.goods_qua) AS qua, " +
-					"imh.order_type_code AS type " +
-				"FROM " +
-					"wm_stock_base_stock wms " +
-				"LEFT JOIN wm_im_notice_i imi ON wms.order_id = imi.id " +
-				"LEFT JOIN wm_im_notice_h imh ON imh.notice_id = imi.im_notice_id " +
-				"GROUP BY " +
-					"imh.order_type_code ";
+						"sum(wms.goods_qua) AS qua, " +
+						"imh.order_type_code AS type " +
+						"FROM " +
+						"wm_stock_base_stock wms " +
+						"LEFT JOIN wm_im_notice_i imi ON wms.order_id = imi.id " +
+						"LEFT JOIN wm_im_notice_h imh ON imh.notice_id = imi.im_notice_id " +
+						"GROUP BY " +
+						"imh.order_type_code ";
  		List<Map<String, Object>> result = this.findForJdbc(sql);
 		Map temp = toMapByType(result);
 		Map ret = new HashMap();
@@ -100,13 +101,13 @@ public class WmStockBaseStockServiceImpl extends CommonServiceImpl implements Wm
 				 	"omh.order_type_code";
 		temp = this.findForJdbc(sql_p_var, daysAgo);
 		Map out_var = toMapByType(temp);
-		Long m_count = (long) stock_now.get("IN_MATERIALS");
-		Long p_count = (long) stock_now.get("IN_PRODUCT");
-		m_count = m_count - (long)im_var.get("IN_MATERIALS") + (long)out_var.get("OUT_MATERIALS");
-		p_count = p_count - (long)im_var.get("IN_PRODUCT") + (long)out_var.get("OUT_PRODUCT");
+		Long m_count = longValue(stock_now.get("IN_MATERIALS"));
+		Long p_count = longValue(stock_now.get("IN_PRODUCT"));
+		m_count = m_count - longValue(im_var.get("IN_MATERIALS")) + longValue(out_var.get("OUT_MATERIALS"));
+		p_count = p_count - longValue(im_var.get("IN_PRODUCT")) + longValue(out_var.get("OUT_PRODUCT"));
 		Map result = new HashMap();
 		result.put("MATERIALS",m_count);
-		result.put("PRODUCT",m_count);
+		result.put("PRODUCT",p_count);
 		return result;
 	}
 
@@ -154,7 +155,7 @@ public class WmStockBaseStockServiceImpl extends CommonServiceImpl implements Wm
 	public long findQuaByType(String code) {
  		String sql = "SELECT SUM(ws.goods_qua) AS 'sum' FROM wm_stock_base_stock ws WHERE ws.goods_id = ?";
 		Map result =  this.findOneForJdbc(sql, code);
-		return result.get("sum") == null ? 0L : (long) result.get("sum");
+		return result.get("sum") == null ? 0L : longValue(result.get("sum"));
 	}
 
 
@@ -188,6 +189,23 @@ public class WmStockBaseStockServiceImpl extends CommonServiceImpl implements Wm
 			}
 		}
  		return map;
+	}
+
+	/**
+	 * 将interger 和 double 类型的数据转换成long 类型的数据
+	 * @param object
+	 * @return
+	 */
+	public Long longValue(Object object){
+		if(object.getClass().toString().contains("Integer")){
+			return ((Integer)object).longValue();
+		}else if(object.getClass().toString().contains("Double")){
+			return ((Double)object).longValue();
+		}else if(object.getClass().toString().contains("Long")){
+			return ((Long)object).longValue();
+		}else {
+			return null;
+		}
 	}
 
 	/**
